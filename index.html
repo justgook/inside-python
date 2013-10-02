@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>tornado WebSocket example</title>
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Inside Python (based on tornado and CodernityDB)</h1>
+    <hr>
+      WebSocket status : <span id="message"></span>
+    <hr>
+    <h3>The following table shows values by using WebSocket</h3>
+    <div class="span12">
+      <table class="table table-striped table-bordered table-condensed" id="wsmsg">
+      </table>
+    </div>
+    <hr>
+    <form class="form-inline" role="form" id="send-form">
+      <div class="form-group">
+        <textarea class="form-control">
+          {
+             "post":[
+                {
+                   "channel":"wiki",
+                   "items":[
+                      {
+                         "title":"hello",
+                         "body":"world"
+                      },
+                      {
+                         "title":"hello2",
+                         "body":"world2"
+                      }
+                   ]
+                }
+             ]
+          }
+
+        </textarea>
+        <button type="submit" class="btn btn-default">Send</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    var ws = new WebSocket('ws://localhost:8888/ws');
+    var $message = $('#message');
+    $("#send-form").on("submit", function () {
+        ws.send($("textarea",this).val());
+        return false;
+    });
+    ws.onopen = function(){
+      $message.attr("class", 'label label-success');
+      $message.text('open');
+    };
+    ws.onmessage = function(ev){
+      $message.attr("class", 'label label-info');
+      $message.hide();
+      $message.fadeIn("slow");
+      $message.text('recieved message');
+      $("#wsmsg").append("<tr><td>"+ ev.data +"</td></tr>");
+    };
+    ws.onclose = function(ev){
+      $message.attr("class", 'label label-important');
+      $message.text('closed');
+    };
+    ws.onerror = function(ev){
+      $message.attr("class", 'label label-warning');
+      $message.text('error occurred');
+    };
+
+  </script>
+</body>
+</html>

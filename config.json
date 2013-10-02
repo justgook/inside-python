@@ -1,0 +1,12 @@
+{
+    "port": 8888,
+    "storage": {
+        "directory": "db"
+    },
+    "logs":{
+        "level": "info",
+        "type": "file",
+        "filename": "info.log"
+    }
+
+}
