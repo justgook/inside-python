@@ -10,7 +10,7 @@ from CodernityDB.database import Database, DatabasePathException, HashIndex
 class ChanelIndex(HashIndex):
 
     def __init__(self, *args, **kwargs):
-        kwargs['key_format'] = '16s'
+        kwargs['key_format'] = 'I'
         super(ChanelIndex, self).__init__(*args, **kwargs)
 
     def make_key_value(self, data):
@@ -66,13 +66,14 @@ class SocketHandler(websocket.WebSocketHandler):
           for curr in db.get_many('channel', channel['channel'], limit=-1, with_doc=True):
             del curr['doc']['channel']
             response.append(curr['doc'])
-          self.write_message(json_encode(response))
+
+          self.write_message(json_encode({"get":[{"channel":channel['channel'],"items": response}]}))
         logging.info(u"ws:get:"+channel['channel'])
       elif method == "subscribe":
         logging.info("subscribe")
       elif method == "unsubscribe":
        logging.info("unsubscribe")
-    self.write_message(u"You said: " + message)
+    # self.write_message(u"You said: " + message)
 
   def on_close(self):
     if self in cl:
@@ -89,6 +90,7 @@ class ApiHandler(web.RequestHandler):
     data = json.dumps(data)
     for c in cl:
       c.write_message(data)
+
   @web.asynchronous
   def post(self):
     pass

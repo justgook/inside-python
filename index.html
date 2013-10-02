@@ -59,7 +59,9 @@
       $message.hide();
       $message.fadeIn("slow");
       $message.text('recieved message');
-      $("#wsmsg").append("<tr><td>"+ ev.data +"</td></tr>");
+      var parsed = JSON.parse(ev.data);
+
+      $("#wsmsg").append("<tr><td><pre>"+ JSON.stringify(parsed, null, 2) +"</pre></td></tr>");
     };
     ws.onclose = function(ev){
       $message.attr("class", 'label label-important');
