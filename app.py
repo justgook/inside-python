@@ -47,33 +47,28 @@ class SocketHandler(websocket.WebSocketHandler):
     try:
       data = json_decode(message)
     except ValueError:
-      self.write_message(u'{"error": {status: 400, "description": "Parsing error"}')
+      self.write_message(u'{"error": {"status": 400, "description": "Parsing error"}')
       return
-    for method, items in data.items():
-      if method == "post":
-        for channel in items:
-          for item in channel['items']:
-            item['channel'] = channel['channel']
-            response = db.insert(item)
-            self.write_message(response)
-      elif method == "put":
-        logging.info("updateing")
-      elif method == "delete":
-        logging.info("delete")
-      elif method == "get":
-        response = []
-        for channel in items:
-          for curr in db.get_many('channel', channel['channel'], limit=-1, with_doc=True):
-            del curr['doc']['channel']
-            response.append(curr['doc'])
+    # create item(s)
+    if data["type"] == "create":
+      for item in data.pop("items", None):
+        if "info-property" in data and data["info-property"] in item:
+          infoProp = item.pop(data["info-property"], None)
+        item["channel"] = data["channel"]
+        item.update(db.insert(item))
+        item.pop("channel", None)
+        if "info-property" in data:
+          item.update({data["info-property"]:infoProp})
+        data["items"] = [item];
+        self.write_message(data)
+    elif data["type"] == "read":
+      responseItems = []
+      if "items" in data:
+        for item in data["items"]:
+          responseItems.insert(0, db.get("id", item["_id"], with_doc=True, with_storage=True))
+      data["items"] = responseItems
+      self.write_message(data)
 
-          self.write_message(json_encode({"get":[{"channel":channel['channel'],"items": response}]}))
-        logging.info(u"ws:get:"+channel['channel'])
-      elif method == "subscribe":
-        logging.info("subscribe")
-      elif method == "unsubscribe":
-       logging.info("unsubscribe")
-    # self.write_message(u"You said: " + message)
 
   def on_close(self):
     if self in cl:

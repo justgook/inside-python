@@ -6,7 +6,8 @@ Websocket comunication
 	{
 	   "channel": "wiki",
 	   "type": "create",
-	   "info-properties": "cid",
+	   "info-property": "cid",
+	   "properties":[],
 	   "items": [
 	      {
 	         "cid":"r3457",
@@ -22,7 +23,8 @@ Websocket comunication
 	}
  * **channel** - module / index name
  * **type** - request type `create`, `read`, `update`, `delete`, `subscribe`, `unsubscribe`
- * **info-properties** (*optimal*) - properties in `items` that will not be writed in database, but used just for response detection (will back in response)
+ * **info-property** (*optimal*) - property in `items` that will not be wrote in database, but used just for response detection (will back in response)
+ * **properties** (*optimal*) - list of properties to return, if not set then will return all, if empty will return only `_id` and proporties setted in `info-property`
  * **items** - array of documents
 
 **response:**
@@ -50,7 +52,7 @@ Websocket comunication
 	{
 	   "channel": "wiki",
 	   "type": "read",
-	   "info-properties": "cid",
+	   "info-property": "cid",
 	   "properties":["title","body"],
 	   "items": [
 	      {
@@ -61,8 +63,8 @@ Websocket comunication
 	}
  * **channel** - module / index name
  * **type** - request type `create`, `read`, `update`, `delete`, `subscribe`, `unsubscribe`
- * **info-properties** (*optimal*) - properties in `items` that will not be writed in database, but used just for response detection (will back in response)
- * **properties** (*optimal*) - list of properties to return, if not set then will return all, if empty will return only `_id` and proporties setted in `info-properties`
+ * **info-property** (*optimal*) - property in `items` that will not be wrote in database, but used just for response detection (will back in response)
+ * **properties** (*optimal*) - list of properties to return, if not set then will return all, if empty will return only `_id` and proporties setted in `info-property`
  * **items** - array of documents
 
 **request item list:**
@@ -86,7 +88,7 @@ Websocket comunication
 	{
 	   "channel": "wiki",
 	   "type": "read",
-	   "info-properties": "cid",
+	   "info-property": "cid",
 	   "properties":["title","body"],
 	   "items": [
 	      {
@@ -127,7 +129,7 @@ Websocket comunication
 	{
 	   "channel": "wiki",
 	   "type": "update",
-	   "info-properties": "cid",
+	   "info-property": "cid",
 	   "properties":["title","body"],
 	   "items": [
 	      {
@@ -146,8 +148,8 @@ Websocket comunication
 	}
  * **channel** - module / index name
  * **type** - request type `create`, `read`, `update`, `delete`, `subscribe`, `unsubscribe`
- * **info-properties** (*optimal*) - properties in `items` that will not be writed in database, but used just for response detection (will back in response)
- * **properties** (*optimal*) - list of properties to return, if not set then will return all, if empty will return only `_id` and proporties setted in `info-properties`
+ * **info-property** (*optimal*) - property in `items` that will not be wrote in database, but used just for response detection (will back in response)
+ * **properties** (*optimal*) - list of properties to return, if not set then will return all, if empty will return only `_id` and proporties setted in `info-property`
  * **items** (for each item must be set `_id`) - array of documents
 
 ####(TODO request item list)
@@ -182,7 +184,7 @@ Websocket comunication
 	{
 	   "channel": "wiki",
 	   "type": "delete",
-	   "info-properties": "cid",
+	   "info-property": "cid",
 	   "items": [
 	      {
 	         "cid":"r3457",
@@ -200,7 +202,7 @@ Websocket comunication
 	{
 	   "channel": "wiki",
 	   "type": "delete",
-	   "info-properties": "cid",
+	   "info-property": "cid",
 	   "items": [
 	      {
 	         "cid":"r3457",
@@ -222,7 +224,7 @@ Websocket comunication
 	{
 	   "channel": "wiki",
 	   "type": "subscribe",
-	   "info-properties": "cid",
+	   "info-property": "cid",
 	   "properties": ["title", "body"],
 	   "items": [
 	      {
@@ -233,8 +235,8 @@ Websocket comunication
 	}
  * **channel** - module / index name
  * **type** - request type `create`, `read`, `update`, `delete`, `subscribe`, `unsubscribe`
- * **info-properties** (*optimal*) - properties in `items` that will not be writed in database, but used just for response detection (will back in response)
- * **properties** (*optimal*) - list of properties to return, if not set then will return all, if empty will return only `_id` and proporties setted in `info-properties`
+ * **info-property** (*optimal*) - property in `items` that will not be wrote in database, but used just for response detection (will back in response)
+ * **properties** (*optimal*) - list of properties to return, if not set then will return all, if empty will return only `_id` and proporties setted in `info-property`
  * **items** - array of documents
 
 **request item list:**
@@ -262,7 +264,7 @@ automatically on `create` / `update` / `delete`
 	{
 	   "channel": "wiki",
 	   "type": "subscribe",
-	   "info-properties": "cid",
+	   "info-property": "cid",
 	   "properties": ["title", "body"],
 	   "items": [
 	      {

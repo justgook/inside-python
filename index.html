@@ -20,24 +20,23 @@
     <form class="form-inline" role="form" id="send-form">
       <div class="form-group">
         <textarea class="form-control">
-          {
-             "post":[
-                {
-                   "channel":"wiki",
-                   "items":[
-                      {
-                         "title":"hello",
-                         "body":"world"
-                      },
-                      {
-                         "title":"hello2",
-                         "body":"world2"
-                      }
-                   ]
-                }
-             ]
-          }
-
+        {
+           "channel": "wiki",
+           "type": "create",
+           "info-property": "cid",
+           "items": [
+              {
+                 "cid":"r3457",
+                 "title":"hello",
+                 "body":"world"
+              },
+              {
+                 "cid":"r3458",
+                 "title":"hello2",
+                 "body":"world2"
+              }
+           ]
+        }
         </textarea>
         <button type="submit" class="btn btn-default">Send</button>
       </div>
@@ -47,7 +46,7 @@
     var ws = new WebSocket('ws://localhost:8888/ws');
     var $message = $('#message');
     $("#send-form").on("submit", function () {
-        ws.send($("textarea",this).val());
+        ws.send($("textarea", this).val());
         return false;
     });
     ws.onopen = function(){
